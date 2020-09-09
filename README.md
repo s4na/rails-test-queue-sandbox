@@ -1,24 +1,33 @@
-# README
+# Rails sandbox
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Test
 
-Things you may want to cover:
+```
+bin/rspec-queue
+```
 
-* Ruby version
+## Database poolの謎
 
-* System dependencies
+```
+     ActiveRecord::StatementInvalid:
+       SQLite3::BusyException: database is locked
+     # ./spec/views/users/index.html.erb_spec.rb:6:in `block (2 levels) in <top (required)>'
+     # ------------------
+     # --- Caused by: ---
+     # SQLite3::BusyException:
+     #   database is locked
+     #   ./spec/views/users/index.html.erb_spec.rb:6:in `block (2 levels) in <top (required)>'
+```
 
-* Configuration
+が、
 
-* Database creation
+https://stackoverflow.com/questions/7154664/ruby-sqlite3busyexception-database-is-locked
 
-* Database initialization
+で解決できた。
 
-* How to run the test suite
+defaultだと少ない？
 
-* Services (job queues, cache servers, search engines, etc.)
+## マルチDB実行
 
-* Deployment instructions
+https://qiita.com/yagince/items/4dd3348c056929687510
 
-* ...
