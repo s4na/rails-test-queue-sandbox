@@ -56,4 +56,7 @@ group :development, :test do
   gem "test-queue"
 
   gem 'rubocop'
+  gem 'database_rewinder'
 end
+
+gem 'pg'

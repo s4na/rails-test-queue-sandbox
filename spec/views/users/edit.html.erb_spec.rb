@@ -2,10 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "users/edit", type: :view do
   before(:each) do
-    @user = assign(:user, User.create!(
-      name: "MyString",
-      age: 1
-    ))
+    @user = FactoryBot.create(:user, name: "Name 1", age: 1)
   end
 
   it "renders the edit user form" do

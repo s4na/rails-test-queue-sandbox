@@ -5,32 +5,35 @@ require File.expand_path('../../config/environment', __FILE__)
 
 require 'test_queue'
 require 'test_queue/runner/rspec'
+require 'database_rewinder'
 
 class RSpecTestQueueRunner < TestQueue::Runner::RSpec
-  def after_fork(num)
-    ENV.update('TEST_ENV_NUMBER' => num.to_s)
+  # def after_fork(num)
+  #   ENV.update('TEST_ENV_NUMBER' => num.to_s)
 
-    ActiveRecord::Base.configurations['test']['database'] << num.to_s
-    ActiveRecord::Base.establish_connection(:test)
+  #   ActiveRecord::Base.configurations['test']['database'] << num.to_s
+  #   ActiveRecord::Base.establish_connection(:test)
 
-    ActiveRecord::Tasks::DatabaseTasks.drop_current
-    ActiveRecord::Tasks::DatabaseTasks.create_current
-    ActiveRecord::Tasks::DatabaseTasks.load_schema_current
-  end
+  #   ActiveRecord::Tasks::DatabaseTasks.drop_current
+  #   ActiveRecord::Tasks::DatabaseTasks.create_current
+  #   ActiveRecord::Tasks::DatabaseTasks.load_schema_current
 
-  def summarize
-    estatus = @completed.inject(0){ |s, worker| s + worker.status.exitstatus }
-    estatus = 255 if estatus > 255
-    exit(estatus)
-  end
+  #   DatabaseRewinder.init
+  # end
 
-  def run_worker(iterator)
-    @run_worker_ret = super
-  end
+  # def summarize
+  #   estatus = @completed.inject(0){ |s, worker| s + worker.status.exitstatus }
+  #   estatus = 255 if estatus > 255
+  #   exit(estatus)
+  # end
 
-  def cleanup_worker
-    Kernel.exit @run_worker_ret if @run_worker_ret
-  end
+  # def run_worker(iterator)
+  #   @run_worker_ret = super
+  # end
+
+  # def cleanup_worker
+  #   Kernel.exit @run_worker_ret if @run_worker_ret
+  # end
 end
 
 RSpecTestQueueRunner.new.execute
